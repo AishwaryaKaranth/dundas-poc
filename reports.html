@@ -1,0 +1,51 @@
+<head>
+	<script
+		src="http://www.dundas.com/files/dbi/dundas.embed.js/10.0.0.1000/dundas.embed.min.js"
+		type="text/javascript"
+	></script>
+</head>
+
+<body>
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function (event) {
+			// *****************************************************************************
+			// It is usually best practice to get the logon token at the server.
+			// Credentials should not be specified directly in script unless they should be
+			// freely available to users.
+			// *****************************************************************************
+			var dundasBIUrl = 'https://dundasbi.tst.sintel.com.br/'
+			dundas.embed.logon.getLogonToken(
+				'https://dundasbi.tst.sintel.com.br/',
+				{
+					accountName: 'aishwarya.k',
+					password: '5T@w2!pFEg8#',
+					isWindowsLogOn: false,
+				},
+				function (getLogOnTokenResultData) {
+					var dundasApp = dundas.embed.create(document.getElementById('dundasBI2'), {
+						dundasBIUrl: dundasBIUrl,
+						controllerType: dundas.embed.ControllerType.DASHBOARD,
+						fileSystemId: 'c03e53ba-b435-4629-817d-896854dfd986',
+						logonTokenId: getLogOnTokenResultData.logOnToken,
+					})
+
+					dundasApp.parameterValues = [
+						// The object is created by passing the name,
+						// and then the value formatted in the same way
+						// that would be defined via the query string
+						new dundas.embed.ParameterValue(
+							// The name of the view parameter
+							'viewParameter2',
+							// The value formatted to be passed in the
+							// same way as if was passed via query string.
+							'!' + 25000 + '~' + dundas.embed.tokens.basic.OPEN_RANGE
+						),
+					]
+
+					dundasApp.load()
+				}
+			)
+		})
+	</script>
+	<div id="dundasBI2"></div>
+</body>
